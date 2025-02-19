@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Chivo:wght@300;400;700&display=swap');
 
 body {
-    background-color: #23272A;
+    background: linear-gradient(to bottom, #0C0E14, #10121A, #08090C);
     color: white;
     font-family: "Chivo", Arial, sans-serif;
     text-align: center;
@@ -11,6 +11,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    background: linear-gradient(to bottom, #23272A, #1D2124);
 }
 
 /* Container */
@@ -22,13 +23,19 @@ body {
 
 /* Profile Picture */
 .profile-pic {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    border: 1px solid white;
-    object-fit: cover;
-    margin-bottom: 15px;
-    background: linear-gradient(to bottom, #121212, transparent);
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+
+  box-shadow: 
+      0px 0px 7px rgba(255, 255, 255, 0.05), 
+      0px 0px 12px rgba(255, 255, 255, 0.02); 
+
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 10%, transparent 80%);
 }
 
 /* Headings */
@@ -38,11 +45,12 @@ h1 {
     margin: 10px 0;
 }
 h2 {
-    font-size: 18px;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.87);
-    margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
+  letter-spacing: 0.5px;
 }
+
 p {
     font-size: 14px;
     font-weight: 300; /* Chivo Light */
@@ -57,11 +65,12 @@ p {
     gap: 18px;
     margin-top: 20px;
 }
+
 .social-links a {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #222;
+    background-color: #2D3237;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -80,12 +89,13 @@ p {
 
 /* Hover Effect */
 .social-links a:hover {
-    background-color: #444;
+    background-color: #3A3F45;
+    transform: scale(1.1);
 }
 
 /* Resume Button */
 .resume-btn {
-    background-color: #222;
+    background-color: #2D3237;
     color: white;
     font-size: 22px;
     width: 50px;
@@ -104,7 +114,8 @@ p {
     filter: invert(100%);
 }
 .resume-btn:hover {
-    background-color: #444;
+    background-color: #3A3F45;
+    transform: scale(1.1);
 }
 
 /* Easter Egg */
@@ -115,40 +126,60 @@ p {
     cursor: pointer;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     text-decoration: none;
+    animation: floatAnimation 3s infinite ease-in-out;
 }
 .easter-egg:hover {
     opacity: 1;
     transform: scale(1.3);
 }
+@keyframes floatAnimation {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
 
 /* Resume Modal */
 .resume-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* Darker background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
+
+.resume-modal.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Resume Content (Popup) */
 .resume-content {
-    background: white;
-    padding: 2px;
-    border-radius: 6px;
-    width: 85%;
-    max-width: 850px;
-    height: 95%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background: white;
+  padding: 2px;
+  border-radius: 6px;
+  width: 85%; /* Make it larger */
+  max-width: 850px; /* Don't let it get too large */
+  height: 95%; /* Adjust height to fit screen */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
 }
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
+
+/* Resume PDF Iframe */
+.resume-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /* Mobile Optimizations */
@@ -162,8 +193,8 @@ iframe {
       justify-content: center;
   }
   .profile-pic {
-      width: 160px;
-      height: 160px;
+      width: 180px;
+      height: 180px;
   }
   h1 {
       font-size: 24px;
@@ -193,5 +224,30 @@ iframe {
   .resume-btn img {
       width: 24px;
       height: 24px;
+  }
+}
+
+/* Fade-in effect for elements inside the container */
+.profile-pic, h1, h2, p, .social-links {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Slight delay for smooth effect */
+h1 { animation-delay: 0.1s; }
+h2 { animation-delay: 0.2s; }
+p { animation-delay: 0.3s; }
+.social-links { animation-delay: 0.4s; }
+
+/* Fade-in Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }

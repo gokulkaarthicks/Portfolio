@@ -22,8 +22,35 @@ function getRandomPosition() {
 
 function App() {
   const [showResume, setShowResume] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [activeEgg, setActiveEgg] = useState(null);
   const [eggPosition, setEggPosition] = useState({});
+  const [animateResume, setAnimateResume] = useState(false);
+
+  // Detect if user is on a mobile device
+  useEffect(() => {
+      const handleResize = () => {
+          setIsMobile(window.innerWidth <= 768);
+      };
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
+  const openResume = () => {
+      if (isMobile) {
+          // On mobile, open in a new tab instead of modal
+          window.open("/resume.pdf", "_blank");
+      } else {
+          setShowResume(true);
+          setTimeout(() => setAnimateResume(true), 10);
+      }
+  };
+
+  const closeResume = () => {
+    setAnimateResume(false);
+    setTimeout(() => setShowResume(false), 200); // Smooth closing animation
+  };
 
   useEffect(() => {
     function showRandomEgg() {
@@ -67,7 +94,7 @@ function App() {
 
       {/* Social Links */}
       <div className="social-links">
-        <a href="https://github.com/gokulkaarthick" target="_blank" rel="noopener noreferrer">
+        <a href="https://github.com/gokulkaarthicks" target="_blank" rel="noopener noreferrer">
           <img src={githubIcon} alt="GitHub" />
         </a>
         <a href="https://linkedin.com/in/gokulkaarthick" target="_blank" rel="noopener noreferrer">
@@ -77,18 +104,18 @@ function App() {
           <img src={emailIcon} alt="Email" />
         </a>
         {/* Resume Button */}
-        <button className="resume-btn" onClick={() => setShowResume(true)}>
+        <button className="resume-btn" onClick={openResume}>
           <img src={resumeIcon} alt="Resume" />
         </button>
       </div>
 
       {/* Resume Modal */}
-      {showResume && (
-        <div className="resume-modal" onClick={() => setShowResume(false)}>
-          <div className="resume-content" onClick={(e) => e.stopPropagation()}>
-            <iframe src="/resume.pdf#zoom=80" title="Resume"></iframe>
-          </div>
-        </div>
+      {!isMobile && showResume && (
+            <div className={`resume-modal ${animateResume ? "show" : ""}`} onClick={closeResume}>
+                 <div className="resume-content" onClick={(e) => e.stopPropagation()}>
+                    <iframe src="/resume.pdf#zoom=80" title="Resume"></iframe>
+                </div>
+            </div>
       )}
     </div>
   );
